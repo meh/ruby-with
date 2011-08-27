@@ -1,5 +1,5 @@
 Gem::Specification.new {|s|
-    s.name         = 'refining'
+    s.name         = 'with'
     s.version      = '0.0.1'
     s.author       = 'meh.'
     s.email        = 'meh@paranoici.org'
