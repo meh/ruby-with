@@ -26,15 +26,10 @@ module Kernel
       exception = e
     end
 
-    if objects.length == 1
-      if objects.first.respond_to? :__exit__
-        objects.first.__exit__ exception
-      else
-        raise exception if exception
-      end
-    else
-      raise exception if exception
-    end
+
+    raise exception if objects.none? {|object|
+      object.respond_to?(:__exit__) && object.__exit__(exception)
+    } && exception
 
     result
   end
