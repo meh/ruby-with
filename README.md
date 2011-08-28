@@ -13,6 +13,7 @@ the with and having it closed) you can `require 'with/adapters'`, otherwise thos
 not present.
 
 Example:
+
 ```ruby
 require 'with'
 require 'with/adapters'
