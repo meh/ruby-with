@@ -26,9 +26,14 @@ module Kernel
       exception = e
     end
 
-
     raise exception if objects.none? {|object|
-      object.respond_to?(:__exit__) && object.__exit__(exception)
+      next unless object.respond_to?(:__exit__)
+      
+      if object.method(:__exit__).arity == 0
+        object.__exit__ && false
+      else
+        object.__exit__(exception)
+      end
     } && exception
 
     result
