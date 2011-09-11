@@ -11,31 +11,37 @@
 #++
 
 module Kernel
-  def with (*objects, &block)
-    result, exception = nil
+	def with (*objects, &block)
+		result, exception = nil
 
-    begin
-      result = block.call *objects.map {|object|
-        if object.respond_to? :__enter__
-          object.__enter__
-        else
-          object
-        end
-      }
-    rescue Exception => e
-      exception = e
-    end
+		begin
+			result = block.call *objects.map {|object|
+				if object.respond_to? :__enter__
+					object.__enter__
+				else
+					object
+				end
+			}
+		rescue Exception => e
+			exception = e
+		end
 
-    raise exception if objects.none? {|object|
-      next unless object.respond_to?(:__exit__)
-      
-      if object.method(:__exit__).arity == 0
-        object.__exit__ && false
-      else
-        object.__exit__(exception)
-      end
-    } && exception
+		raise exception if objects.none? {|object|
+			next unless object.respond_to?(:__exit__)
 
-    result
-  end
+			if object.method(:__exit__).arity == 0
+				object.__exit__ && false
+			else
+				object.__exit__(exception)
+			end
+		} && exception
+
+		result
+	end
+end
+
+class Object
+	def tap! (&block)
+		Kernel.with(self, &block)
+	end
 end

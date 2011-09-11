@@ -11,7 +11,7 @@
 #++
 
 class IO
-  def __exit__
-    close rescue nil
-  end
+	def __exit__
+		close rescue nil
+	end
 end
